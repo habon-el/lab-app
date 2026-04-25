@@ -10,6 +10,12 @@ import logo3 from '../assets/logos/logo-3.svg';
 
 const sampleLogos = [logo1, logo2, logo3];
 
+const sampleLogos = [
+  '/client/src/assets/logos/logo-1.svg',
+  '/client/src/assets/logos/logo-2.svg',
+  '/client/src/assets/logos/logo-3.svg'
+];
+
 export default function CustomizePage() {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
@@ -19,6 +25,7 @@ export default function CustomizePage() {
   useEffect(() => {
     if (id) api<Product>(`/products/${id}`).then(setProduct);
   }, [id]);
+  useEffect(() => { if (id) api<Product>(`/products/${id}`).then(setProduct); }, [id]);
   const previewName = useMemo(() => `${product?.name || 'Hat'} Design`, [product?.name]);
 
   if (!product) return <p>Loading...</p>;

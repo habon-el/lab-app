@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
 
 export default function AuthPage() {
@@ -35,6 +36,14 @@ export default function AuthPage() {
 
       if (latestUser?.role === 'ADMIN') navigate('/admin/dashboard');
       else navigate('/account');
+  const { login, signup } = useAuthStore();
+
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      if (isSignup) await signup(email, password);
+      else await login(email, password);
+      navigate('/account');
     } catch (err) {
       setError((err as Error).message);
     }
@@ -43,6 +52,7 @@ export default function AuthPage() {
   return (
     <form className="mx-auto max-w-md space-y-4 rounded-xl bg-panel p-6" onSubmit={onSubmit}>
       <h2 className="text-2xl font-semibold">{isSignup ? 'Create account' : isAdminLogin ? 'Admin login' : 'Login'}</h2>
+      <h2 className="text-2xl font-semibold">{isSignup ? 'Create account' : 'Login'}</h2>
       <input className="w-full rounded bg-black/40 p-2" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
       <input className="w-full rounded bg-black/40 p-2" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
       {error && <p className="text-red-400">{error}</p>}
