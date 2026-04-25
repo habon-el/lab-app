@@ -4,6 +4,11 @@ import { api } from '../lib/api';
 import { Product } from '../types';
 import { HatCanvas } from '../components/HatCanvas';
 import { placements, useCustomizerStore } from '../store/useCustomizerStore';
+import logo1 from '../assets/logos/logo-1.svg';
+import logo2 from '../assets/logos/logo-2.svg';
+import logo3 from '../assets/logos/logo-3.svg';
+
+const sampleLogos = [logo1, logo2, logo3];
 
 const sampleLogos = [
   '/client/src/assets/logos/logo-1.svg',
@@ -17,6 +22,9 @@ export default function CustomizePage() {
   const [status, setStatus] = useState('');
   const { placement, setPlacement, imageUrl, setImageUrl, customText, setCustomText, decorationType, setDecorationType, transform, updateTransform, autoRotate, setAutoRotate } = useCustomizerStore();
 
+  useEffect(() => {
+    if (id) api<Product>(`/products/${id}`).then(setProduct);
+  }, [id]);
   useEffect(() => { if (id) api<Product>(`/products/${id}`).then(setProduct); }, [id]);
   const previewName = useMemo(() => `${product?.name || 'Hat'} Design`, [product?.name]);
 
